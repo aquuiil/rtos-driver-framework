@@ -214,9 +214,9 @@ MIT License
 
 
 
-\[Your Name]
+\[Aquil]
 
-\- GitHub: \[@yourusername](https://github.com/yourusername)
+\- GitHub: \[@aquuiil](https://github.com/aquuiil)
 
-\- LinkedIn: \[Your Profile](https://linkedin.com/in/yourprofile)
+\- LinkedIn: \(https://www.linkedin.com/in/muhammed-aquil-k/)
 
