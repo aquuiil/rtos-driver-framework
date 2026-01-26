@@ -1,0 +1,2 @@
+C:\msys64\mingw64\bin\ar.exe qc librtos_kernel.a CMakeFiles/rtos_kernel.dir/src/kernel/scheduler.c.obj CMakeFiles/rtos_kernel.dir/src/kernel/task.c.obj CMakeFiles/rtos_kernel.dir/src/kernel/memory.c.obj
+C:\msys64\mingw64\bin\ranlib.exe librtos_kernel.a

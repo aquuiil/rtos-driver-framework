@@ -1,0 +1,2 @@
+C:\msys64\mingw64\bin\ar.exe qc librtos_hal.a CMakeFiles/rtos_hal.dir/src/hal/arm_cortex_m4.c.obj
+C:\msys64\mingw64\bin\ranlib.exe librtos_hal.a

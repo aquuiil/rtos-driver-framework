@@ -1,0 +1,1 @@
+ ../librtos_kernel.a ../librtos_drivers.a ../librtos_hal.a ../librtos_ipc.a ../librtos_bootloader.a -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 

@@ -1,0 +1,2 @@
+C:\msys64\mingw64\bin\ar.exe qc librtos_drivers.a CMakeFiles/rtos_drivers.dir/src/drivers/uart_driver.c.obj CMakeFiles/rtos_drivers.dir/src/drivers/i2c_driver.c.obj CMakeFiles/rtos_drivers.dir/src/drivers/spi_driver.c.obj
+C:\msys64\mingw64\bin\ranlib.exe librtos_drivers.a

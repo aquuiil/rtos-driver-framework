@@ -1,0 +1,2 @@
+C:\msys64\mingw64\bin\ar.exe qc librtos_ipc.a CMakeFiles/rtos_ipc.dir/src/ipc/message_queue.c.obj CMakeFiles/rtos_ipc.dir/src/ipc/semaphore.c.obj CMakeFiles/rtos_ipc.dir/src/ipc/mutex.c.obj
+C:\msys64\mingw64\bin\ranlib.exe librtos_ipc.a

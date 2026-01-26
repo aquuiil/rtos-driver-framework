@@ -1,0 +1,13 @@
+D:/AQUIL/EMBEDDED PROJECTS/Custom RTOS with Device Driver Framework/rtos-driver-framework/build/CMakeFiles/rtos_kernel.dir
+D:/AQUIL/EMBEDDED PROJECTS/Custom RTOS with Device Driver Framework/rtos-driver-framework/build/CMakeFiles/rtos_drivers.dir
+D:/AQUIL/EMBEDDED PROJECTS/Custom RTOS with Device Driver Framework/rtos-driver-framework/build/CMakeFiles/rtos_hal.dir
+D:/AQUIL/EMBEDDED PROJECTS/Custom RTOS with Device Driver Framework/rtos-driver-framework/build/CMakeFiles/rtos_ipc.dir
+D:/AQUIL/EMBEDDED PROJECTS/Custom RTOS with Device Driver Framework/rtos-driver-framework/build/CMakeFiles/rtos_bootloader.dir
+D:/AQUIL/EMBEDDED PROJECTS/Custom RTOS with Device Driver Framework/rtos-driver-framework/build/CMakeFiles/rtos_demo.dir
+D:/AQUIL/EMBEDDED PROJECTS/Custom RTOS with Device Driver Framework/rtos-driver-framework/build/CMakeFiles/test.dir
+D:/AQUIL/EMBEDDED PROJECTS/Custom RTOS with Device Driver Framework/rtos-driver-framework/build/CMakeFiles/edit_cache.dir
+D:/AQUIL/EMBEDDED PROJECTS/Custom RTOS with Device Driver Framework/rtos-driver-framework/build/CMakeFiles/rebuild_cache.dir
+D:/AQUIL/EMBEDDED PROJECTS/Custom RTOS with Device Driver Framework/rtos-driver-framework/build/tests/CMakeFiles/rtos_tests.dir
+D:/AQUIL/EMBEDDED PROJECTS/Custom RTOS with Device Driver Framework/rtos-driver-framework/build/tests/CMakeFiles/test.dir
+D:/AQUIL/EMBEDDED PROJECTS/Custom RTOS with Device Driver Framework/rtos-driver-framework/build/tests/CMakeFiles/edit_cache.dir
+D:/AQUIL/EMBEDDED PROJECTS/Custom RTOS with Device Driver Framework/rtos-driver-framework/build/tests/CMakeFiles/rebuild_cache.dir

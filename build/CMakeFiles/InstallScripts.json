@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"D:/AQUIL/EMBEDDED PROJECTS/Custom RTOS with Device Driver Framework/rtos-driver-framework/build/cmake_install.cmake",
+		"D:/AQUIL/EMBEDDED PROJECTS/Custom RTOS with Device Driver Framework/rtos-driver-framework/build/tests/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
