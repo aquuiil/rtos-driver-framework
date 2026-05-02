@@ -77,7 +77,8 @@ void scheduler_remove_task(tcb_t *tcb) {
     }
 }
 
-/* Get highest priority ready task */
+/* Get highest priority ready task
+   0 being highest priority, and larger number are lower priority */
 static tcb_t* get_highest_priority_task(void) {
     for (int i = 0; i < NUM_PRIORITY_LEVELS; i++) {
         if (ready_lists[i] != NULL) {
