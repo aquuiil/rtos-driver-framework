@@ -9,6 +9,7 @@
 #include "ipc/mutex.h"
 #include "hal/arm_cortex_m4.h"
 #include "bootloader/bootloader.h"
+#include "driver_framework.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -119,7 +120,16 @@ int main(void) {
     /* Initialize scheduler */
     scheduler_init();
     
-    /* Initialize UART */
+    /* ============== DEVICE FRAMEWORK SETUP ============== */
+    printf("[MAIN] Initializing Device Framework...\n");
+    
+    /* Initialize device framework */
+    device_framework_init();
+    
+    /* Register built-in drivers */
+    device_register_builtin_drivers();
+    
+    /* Create platform device configurations */
     uart_config_t uart_cfg = {
         .baud_rate = UART_BAUD_115200,
         .parity = UART_PARITY_NONE,
@@ -130,24 +140,69 @@ int main(void) {
         .rx_buffer_size = 256,
         .tx_buffer_size = 256
     };
-    uart0 = uart_init(0, &uart_cfg);
     
-    /* Initialize I2C */
     i2c_config_t i2c_cfg = {
         .speed = I2C_SPEED_FAST,
         .addr_mode = I2C_ADDR_7BIT,
         .enable_dma = false,
         .timeout_ms = 100
     };
-    i2c0 = i2c_init(0, &i2c_cfg);
     
-    /* Initialize SPI */
     spi_config_t spi_cfg = {
         .mode = SPI_MODE_0,
         .speed = SPI_SPEED_HIGH,
         .enable_dma = false
     };
-    spi_handle_t *spi0 = spi_init(0, &spi_cfg);
+    
+    /* Register platform devices (these tell drivers how to initialize) */
+    device_t uart_dev = {
+        .name = "uart_0",
+        .id = 0,
+        .driver_name = "uart_driver",
+        .platform_data = &uart_cfg,
+        .init_priority = 10,
+        .initialized = false
+    };
+    device_register(&uart_dev);
+    
+    device_t i2c_dev = {
+        .name = "i2c_0",
+        .id = 0,
+        .driver_name = "i2c_driver",
+        .platform_data = &i2c_cfg,
+        .init_priority = 20,
+        .initialized = false
+    };
+    device_register(&i2c_dev);
+    
+    device_t spi_dev = {
+        .name = "spi_0",
+        .id = 0,
+        .driver_name = "spi_driver",
+        .platform_data = &spi_cfg,
+        .init_priority = 30,
+        .initialized = false
+    };
+    device_register(&spi_dev);
+    
+    /* Initialize all devices (drivers will be called automatically) */
+    device_init_all();
+    
+    /* Get device handles for use in tasks */
+    device_t *uart_device = device_get_by_name("uart_0");
+    device_t *i2c_device = device_get_by_name("i2c_0");
+    device_t *spi_device = device_get_by_name("spi_0");
+    
+    /* Extract handles from driver_data */
+    uart_handle_t *uart0 = (uart_handle_t *)uart_device->driver_data;
+    i2c_handle_t *i2c0 = (i2c_handle_t *)i2c_device->driver_data;
+    spi_handle_t *spi0 = (spi_handle_t *)spi_device->driver_data;
+    
+    /* Print device registry for verification */
+    device_print_registry();
+    
+    /* ============== IPC SETUP ============== */
+    printf("[MAIN] Creating IPC objects (semaphore, mutex)...\n");
     
     /* Create IPC objects */
     sensor_sem = sem_create(1, 1);
