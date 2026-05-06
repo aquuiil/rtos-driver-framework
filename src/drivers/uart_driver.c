@@ -1,5 +1,6 @@
 #include "drivers/uart_driver.h"
 #include "kernel/memory.h"
+#include "driver_framework.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -675,4 +676,50 @@ void uart_irq_handler(uint8_t uart_id) {
      */
     
     printf("[UART%d] IRQ Handler executed (simulated)\n", uart_id);
+}
+
+/* ============================================================================
+ * DEVICE FRAMEWORK INTEGRATION
+ * ============================================================================
+ * 
+ * ZephyrOS parallel: Mirrors how ZephyrOS drivers implement device.init
+ * callback to integrate with the device tree/device framework.
+ */
+
+/**
+ * Driver initialization callback for device framework
+ * 
+ * Called by device_init_all() when a UART device is being initialized.
+ * 
+ * @param dev Device structure with platform_data containing uart_config_t*
+ * @return DEVICE_STATUS_OK on success
+ */
+device_status_t driver_uart_init(device_t *dev) {
+    if (dev == NULL) {
+        return DEVICE_STATUS_INVALID_PARAM;
+    }
+    
+    printf("[UART Driver] Initializing device: %s (ID: %d)\n", dev->name, dev->id);
+    
+    /* platform_data should contain a pointer to uart_config_t */
+    if (dev->platform_data == NULL) {
+        printf("[UART Driver] ERROR: No platform_data provided\n");
+        return DEVICE_STATUS_INVALID_PARAM;
+    }
+    
+    uart_config_t *config = (uart_config_t *)dev->platform_data;
+    
+    /* Initialize the UART using existing uart_init() */
+    uart_handle_t *uart_handle = uart_init(dev->id, config);
+    
+    if (uart_handle == NULL) {
+        printf("[UART Driver] ERROR: uart_init() failed\n");
+        return DEVICE_STATUS_ERROR;
+    }
+    
+    /* Store the handle in driver_data for later retrieval */
+    dev->driver_data = (void *)uart_handle;
+    
+    printf("[UART Driver] Device %s initialized successfully\n", dev->name);
+    return DEVICE_STATUS_OK;
 }
