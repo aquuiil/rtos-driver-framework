@@ -1,4 +1,5 @@
 #include "drivers/spi_driver.h"
+#include "driver_framework.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -73,4 +74,50 @@ rtos_status_t spi_write(spi_handle_t *spi, const uint8_t *data, size_t len) {
 rtos_status_t spi_read(spi_handle_t *spi, uint8_t *buffer, size_t len) {
     uint8_t dummy_tx[256] = {0xFF};
     return spi_transfer(spi, dummy_tx, buffer, len);
+}
+
+/* ============================================================================
+ * DEVICE FRAMEWORK INTEGRATION
+ * ============================================================================
+ * 
+ * ZephyrOS parallel: Mirrors how ZephyrOS drivers implement device.init
+ * callback to integrate with the device tree/device framework.
+ */
+
+/**
+ * Driver initialization callback for device framework
+ * 
+ * Called by device_init_all() when an SPI device is being initialized.
+ * 
+ * @param dev Device structure with platform_data containing spi_config_t*
+ * @return DEVICE_STATUS_OK on success
+ */
+device_status_t driver_spi_init(device_t *dev) {
+    if (dev == NULL) {
+        return DEVICE_STATUS_INVALID_PARAM;
+    }
+    
+    printf("[SPI Driver] Initializing device: %s (ID: %d)\n", dev->name, dev->id);
+    
+    /* platform_data should contain a pointer to spi_config_t */
+    if (dev->platform_data == NULL) {
+        printf("[SPI Driver] ERROR: No platform_data provided\n");
+        return DEVICE_STATUS_INVALID_PARAM;
+    }
+    
+    spi_config_t *config = (spi_config_t *)dev->platform_data;
+    
+    /* Initialize the SPI using existing spi_init() */
+    spi_handle_t *spi_handle = spi_init(dev->id, config);
+    
+    if (spi_handle == NULL) {
+        printf("[SPI Driver] ERROR: spi_init() failed\n");
+        return DEVICE_STATUS_ERROR;
+    }
+    
+    /* Store the handle in driver_data for later retrieval */
+    dev->driver_data = (void *)spi_handle;
+    
+    printf("[SPI Driver] Device %s initialized successfully\n", dev->name);
+    return DEVICE_STATUS_OK;
 }
