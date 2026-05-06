@@ -1,5 +1,6 @@
 #include "drivers/i2c_driver.h"
 #include "kernel/memory.h"
+#include "driver_framework.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -569,4 +570,50 @@ rtos_status_t i2c_scan_bus(i2c_handle_t *i2c, uint8_t *found_devices, size_t *co
     printf("[I2C%d] Scan complete. Found %zu devices\n", i2c->i2c_id, *count);
     
     return RTOS_OK;
+}
+
+/* ============================================================================
+ * DEVICE FRAMEWORK INTEGRATION
+ * ============================================================================
+ * 
+ * ZephyrOS parallel: Mirrors how ZephyrOS drivers implement device.init
+ * callback to integrate with the device tree/device framework.
+ */
+
+/**
+ * Driver initialization callback for device framework
+ * 
+ * Called by device_init_all() when an I2C device is being initialized.
+ * 
+ * @param dev Device structure with platform_data containing i2c_config_t*
+ * @return DEVICE_STATUS_OK on success
+ */
+device_status_t driver_i2c_init(device_t *dev) {
+    if (dev == NULL) {
+        return DEVICE_STATUS_INVALID_PARAM;
+    }
+    
+    printf("[I2C Driver] Initializing device: %s (ID: %d)\n", dev->name, dev->id);
+    
+    /* platform_data should contain a pointer to i2c_config_t */
+    if (dev->platform_data == NULL) {
+        printf("[I2C Driver] ERROR: No platform_data provided\n");
+        return DEVICE_STATUS_INVALID_PARAM;
+    }
+    
+    i2c_config_t *config = (i2c_config_t *)dev->platform_data;
+    
+    /* Initialize the I2C using existing i2c_init() */
+    i2c_handle_t *i2c_handle = i2c_init(dev->id, config);
+    
+    if (i2c_handle == NULL) {
+        printf("[I2C Driver] ERROR: i2c_init() failed\n");
+        return DEVICE_STATUS_ERROR;
+    }
+    
+    /* Store the handle in driver_data for later retrieval */
+    dev->driver_data = (void *)i2c_handle;
+    
+    printf("[I2C Driver] Device %s initialized successfully\n", dev->name);
+    return DEVICE_STATUS_OK;
 }
